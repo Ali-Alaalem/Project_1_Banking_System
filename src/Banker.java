@@ -1,15 +1,18 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.Scanner;
 
-public class Login {
-    String user_name;
-    String email;
-    String hashed_pass;
+public class Banker extends User{
 
-    public boolean Checker(Optional<String> userName, String password, Optional<String> Email) {
+
+    @Override
+    public boolean Create_account(String userName, String password, String Email, String first_name, String last_name) {
+        return false;
+    }
+
+    @Override
+    public boolean Login(Optional<String> userName, String password, Optional<String> Email) {
         try {
             File file = new File("users.txt");
             Scanner scanner = new Scanner(file);
@@ -36,20 +39,5 @@ public class Login {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-    }
-
-
-
-    public static void main(String[] args) {
-        Scanner scanner =new Scanner(System.in);
-        System.out.println("sign in id you have an account");
-        Optional<String> user_name_or_email= Optional.ofNullable(scanner.nextLine());
-        String password=scanner.nextLine();
-        Login login =new Login();
-        login.Checker(
-                user_name_or_email,
-                password,
-                user_name_or_email
-        );
     }
 }

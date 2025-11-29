@@ -1,9 +1,9 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.Optional;
 import java.util.Scanner;
 
 public class Banker extends User{
+    File file = new File("requests.txt");
 
 
     @Override
@@ -11,33 +11,78 @@ public class Banker extends User{
         return false;
     }
 
-    @Override
-    public boolean Login(Optional<String> userName, String password, Optional<String> Email) {
-        try {
-            File file = new File("users.txt");
-            Scanner scanner = new Scanner(file);
+    public void Requests_num() {
+        if (!file.exists()) {
+            System.out.println("There are 0 requests to be solved");
+            return;
+        }
 
+        try (Scanner scanner = new Scanner(file)) {
+            int lines = 0;
             while (scanner.hasNextLine()) {
-                String[] user = scanner.nextLine().split(",");
-
-                String fileUserName = user[2];
-                String fileEmail = user[3];
-                String filePassword = user[5];
-
-                boolean usernameMatch = userName.isPresent() && userName.get().equals(fileUserName);
-                boolean emailMatch = Email.isPresent() && Email.get().equals(fileEmail);
-                boolean passMatch = password.equals(filePassword);
-
-                if ((usernameMatch || emailMatch) && passMatch) {
-                    System.out.println("your in");
-                    return true;
-                }
+                scanner.nextLine();
+                lines++;
             }
-            System.out.println("The username/email or password is wrong");
-            return false;
-
+            System.out.println("There are " + lines + " requests to be solved");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
+
+
+    public void Display_Requests() {
+        if (!file.exists()) {
+            System.out.println("No requests to display");
+            return;
+        }
+
+        try (Scanner scanner = new Scanner(file)) {
+            System.out.println("Current account requests:");
+            while (scanner.hasNextLine()) {
+                System.out.println(scanner.nextLine());
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
+    public boolean CheckRequests() {
+        try {
+            Scanner scanner = new Scanner(file);
+            Scanner scanner1 = new Scanner(System.in);
+
+            System.out.print("Enter the IDs to approve (separate with ,): ");
+            String[] Ids = scanner1.next().split(",");
+            while (scanner.hasNextLine()) {
+                String[] user = scanner.nextLine().split(",");
+
+                for (String id : Ids) {
+                    if (user[0].equals(id)) {
+
+                        BufferedWriter writer = new BufferedWriter(new FileWriter("users.txt", true));
+                        writer.write(String.join(",", user));
+                        writer.newLine();
+                        writer.close();
+                        System.out.println("Account " + id + " added to users.txt");
+                    }
+                }
+            }
+
+            scanner.close();
+            if (file.delete()) {
+                System.out.println("requests.txt has been deleted");
+            } else {
+                System.out.println("Failed to delete requests.txt (maybe path is wrong or file is in use)");
+            }
+
+            return true;
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

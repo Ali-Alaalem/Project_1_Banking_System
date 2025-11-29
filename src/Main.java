@@ -4,7 +4,11 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
       Customer customer = new Customer();
-        Banker banker;
+        Banker banker =new Banker();
+        User user  =new User();
+
+
+
 
 
         Scanner scanner=new Scanner(System.in);
@@ -19,12 +23,27 @@ public class Main {
             System.out.print("Password :");
             String password=scanner.next();
 
-
-            customer.Login(
+            user.Login(
                     Optional.of(user_name_or_email),
                     String.valueOf(password.hashCode()),
                     Optional.of(user_name_or_email)
             );
+if (user.getUser_type().equals("B")){
+    System.out.println("1-Check requests \n 2-Deposit \n 3-Withdraw");
+    System.out.println("What do you want to do : ");
+    String option=scanner.next();
+    if(option.equals("1")){
+        banker.Requests_num();
+        System.out.println("Do you want to proceed  (y/n)");
+        String option2=scanner.next();
+if(option2.equals("y")){
+    banker.Display_Requests();
+    banker.CheckRequests();
+}else if(option2.equals("n")){
+    System.exit(0);
+}
+    }
+}
 
         }else if(account.equals("n")){
             System.out.print("Do you want to create one?  (y/n) :");

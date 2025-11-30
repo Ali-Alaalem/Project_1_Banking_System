@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -11,6 +13,16 @@ public class User implements IRegistrtion {
     public String email;
     public String hashed_pass;
     public String user_type;
+    public List<Account> accounts = new ArrayList<>();
+
+
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void addAccount(Account acc) {
+        accounts.add(acc);
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -78,19 +90,21 @@ public class User implements IRegistrtion {
 
                 setF_name(user[1]);
                 setL_name(user[2]);
-                setUser_name(user[2]);
+                setUser_name(user[4]);
                 setEmail(user[3]) ;
                 setHashed_pass(user[5]);
+
 
                 boolean usernameMatch = userName.isPresent() && userName.get().equals(getUser_name());
                 boolean emailMatch = Email.isPresent() && Email.get().equals(getEmail());
                 boolean passMatch = password.equals(getHashed_pass());
 
                 if ((usernameMatch || emailMatch) && passMatch) {
-                    if(user[6].equals("C")){
+                    loadAccounts();
+                    if(user[9].equals("C")){
                         setUser_type("C");
                         System.out.println("Welcome Back "+getF_name());
-                    }else if(user[6].equals("B")){
+                    }else if(user[9].equals("B")){
                         setUser_type("B");
                         System.out.println("Welcome Back Employee "+getF_name());
                     }
@@ -105,8 +119,39 @@ public class User implements IRegistrtion {
         }
     }
 
+    public void loadAccounts() {
+        try {
+
+            File file = new File("users.txt");
+            Scanner scanner = new Scanner(file);
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine().trim();
+                if (line.isEmpty()) continue;
+
+                String[] data = line.split(",");
+
+                if (data[4].equals(getUser_name())) {
+                    String accNum = data[7];
+                    double bal = Double.parseDouble(data[8]);
+                    String type = data[6];
+
+                    Account acc;
+                    if(type.equalsIgnoreCase("SAV")) acc = new SavingsAccount(accNum, bal);
+                    else acc = new CheckingAccount(accNum, bal);
+
+                    addAccount(acc);
+                }
+            }
+            scanner.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     @Override
-    public boolean Create_account(String userName, String password, String Email, String first_name, String last_name) {
+    public boolean Create_account(String userName, String password, String Email, String first_name, String last_name,String accType) {
         return false;
     }
 }

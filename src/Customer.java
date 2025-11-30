@@ -8,7 +8,7 @@ public class Customer extends User{
 
 
     @Override
-    public boolean Create_account(String userName, String password, String Email ,String first_name ,String last_name) {
+    public boolean Create_account(String userName, String password, String Email ,String first_name ,String last_name,String accType) {
         try {
             setUser_type("C");
 
@@ -67,10 +67,30 @@ public class Customer extends User{
             int newId = Math.max(lastUserId, lastRequestId) + 1;
             setId(newId);
 
+
             BufferedWriter write = new BufferedWriter(new FileWriter(requestsFile, true));
-            String info = getId() + "," + first_name + "," + last_name + "," + Email + "," + userName + "," + password.hashCode() + "," + getUser_type();
-            write.write(info);
-            write.newLine();
+           String  chk_acc_number= Account.generateAccountNumber();
+           String  sav_acc_number=Account.generateAccountNumber();
+
+            if(accType.equalsIgnoreCase("CHK")){
+                String info = getId() + "," + first_name + "," + last_name + "," + Email + "," + userName + "," + password.hashCode()+"," +"CHK"+","+chk_acc_number+","+"0"+"," + getUser_type();
+                write.write(info);
+                write.newLine();
+
+            }else if (accType.equalsIgnoreCase("SAV")){
+                String info = getId() + "," + first_name + "," + last_name + "," + Email + "," + userName + "," + password.hashCode()+"," +"SAV"+","+sav_acc_number+","+"0"+"," + getUser_type();
+                write.write(info);
+                write.newLine();
+
+            }else if(accType.equalsIgnoreCase("BOTH")){
+                String info = getId() + "," + first_name + "," + last_name + "," + Email + "," + userName + "," + password.hashCode()+"," +"CHK"+","+chk_acc_number+","+"0"+"," + getUser_type();
+                String info2 = getId() + "," + first_name + "," + last_name + "," + Email + "," + userName + "," + password.hashCode()+"," +"SAV"+","+sav_acc_number+","+"0"+"," + getUser_type();
+                write.write(info);
+                write.newLine();
+                write.write(info2);
+                write.newLine();
+
+            }
             write.close();
 
             return true;

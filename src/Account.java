@@ -1,5 +1,4 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -8,6 +7,8 @@ import java.util.Scanner;
 public abstract class Account implements ITransactional {
     protected String accountNumber;
     protected double balance;
+public int overdrafting_count=0;
+
 
     public Account(String accountNumber, double balance) {
         this.accountNumber = accountNumber;
@@ -46,28 +47,74 @@ public abstract class Account implements ITransactional {
 
     @Override
     public void deposit(double amount) {
-        balance+=amount;
-        FindAccAndEditBalance(accountNumber,amount);
+            balance+=amount;
+            FindAccAndEditBalance(accountNumber,amount);
+            System.out.println("you balance now is :" + balance);
+
+
+            if(overdrafting_count ==2 && balance>0){
+                overdrafting_count=0;
+            }
+
+        try {
+            User user=new User();
+            BufferedWriter write = new BufferedWriter(new FileWriter("history.txt", true));
+            write.write(user.getId()+","+"deposit"+","+amount+","+balance);
+            write.newLine();
+            write.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
+    public void withdraw(double amount )  {
+        if(overdrafting_count ==2 ) {
+            System.out.println("you cant do anything your account is locked");
+            return;
+        }
+        if(balance <= -100){
+            return;
+        }
+        balance -= amount;
+        FindAccAndEditBalance(accountNumber, -amount);
         System.out.println("you balance now is :" + balance);
 
-    }
+        try {
 
-    @Override
-    public void withdraw(double amount) throws Exception {
-        if (balance ==0){
-            System.out.println("Insufficient funds");
-        }else {
-            balance-=amount;
-            FindAccAndEditBalance(accountNumber,-amount);
-            System.out.println("you balance now is :" + balance);
+            BufferedWriter write = new BufferedWriter(new FileWriter("history.txt", true));
+            write.write(","+"withdraw"+","+amount+","+balance);
+            write.newLine();
+            write.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
+        if(balance < 0) {
+            overdrafting_count++;
+            balance -=35;
+        }
+        System.out.println(overdrafting_count);
     }
 
     @Override
-    public void transfer(String targetAcc, double amount) throws Exception {
-        withdraw(amount);
-        FindAccAndEditBalance(targetAcc,amount);
-
+    public void transfer(String targetAcc, double amount)  {
+        if(overdrafting_count ==2 ) {
+            System.out.println("you cant do anything your account is locked");
+        }else {
+            withdraw(amount);
+            FindAccAndEditBalance(targetAcc, amount);
+            try {
+                User user=new User();
+                BufferedWriter write = new BufferedWriter(new FileWriter("history.txt", true));
+                write.write(","+"transfer"+","+amount+","+balance);
+                write.newLine();
+                write.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
 

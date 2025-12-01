@@ -6,8 +6,8 @@ import java.util.Scanner;
 
 public class CheckingAccount extends Account{
 
-    public CheckingAccount(String accountNumber, double balance) {
-        super(accountNumber, balance);
+    public CheckingAccount(String accountNumber, double balance ,User user) {
+        super(accountNumber, balance ,user);
     }
 
 }

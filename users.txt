@@ -1,3 +1,3 @@
 0,Mueen,Ahmed,Mueen123@gmail.com,Mueen123,1509442,CHK,0000001111,0,B
-1,ali,moh,ali@gmail.com,Alooy,1509442,CHK,6573378595,350.0,C
-1,ali,moh,ali@gmail.com,Alooy,1509442,SAV,2581989522,212.0,C
+1,ali,moh,ali@gmail.com,Alooy,1509442,CHK,6573378595,600.0,C
+1,ali,moh,ali@gmail.com,Alooy,1509442,SAV,2581989522,400.0,C

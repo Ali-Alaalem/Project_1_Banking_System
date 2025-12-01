@@ -1,9 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class User implements IRegistrtion {
     public int id=0;
@@ -100,6 +98,7 @@ public class User implements IRegistrtion {
                 boolean passMatch = password.equals(getHashed_pass());
 
                 if ((usernameMatch || emailMatch) && passMatch) {
+                    setId(Integer.parseInt(user[0]));
                     loadAccounts();
                     if(user[9].equals("C")){
                         setUser_type("C");
@@ -137,10 +136,34 @@ public class User implements IRegistrtion {
                     String type = data[6];
 
                     Account acc;
-                    if(type.equalsIgnoreCase("SAV")) acc = new SavingsAccount(accNum, bal);
-                    else acc = new CheckingAccount(accNum, bal);
+                    if(type.equalsIgnoreCase("SAV")) acc = new SavingsAccount(accNum, bal,this);
+                    else acc = new CheckingAccount(accNum, bal ,this);
 
                     addAccount(acc);
+                }
+            }
+            scanner.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void DisplayHistory(){
+        try {
+
+            File file = new File("history.txt");
+            Scanner scanner = new Scanner(file);
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine().trim();
+                if (line.isEmpty()) continue;
+
+                String[] data = line.split(",");
+
+                if (Integer.parseInt(data[0])==getId()) {
+                    String history=Arrays.stream(data).filter(n->!n.equals(data[0])).collect(Collectors.joining(","));
+                    System.out.println(history);
+
                 }
             }
             scanner.close();

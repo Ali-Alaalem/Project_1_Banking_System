@@ -1,1 +1,3 @@
-0,deposit,50.0,350.0
+1,Account Type:SAV, - Account number:2581989522, - Transaction Type:deposit, - Amount:100.0, - Current balance:400.0
+
+1,Account Type:CHK, - Account number:6573378595, - Transaction Type:deposit, - Amount:100.0, - Current balance:600.0

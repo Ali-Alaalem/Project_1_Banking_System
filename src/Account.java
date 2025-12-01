@@ -8,11 +8,14 @@ public abstract class Account implements ITransactional {
     protected String accountNumber;
     protected double balance;
 public int overdrafting_count=0;
+public User user;
 
 
-    public Account(String accountNumber, double balance) {
+    public Account(String accountNumber, double balance , User user) {
         this.accountNumber = accountNumber;
         this.balance = balance;
+        this.user=user;
+
     }
 
     public String getType() {
@@ -56,46 +59,28 @@ public int overdrafting_count=0;
                 overdrafting_count=0;
             }
 
-        try {
-            User user=new User();
-            BufferedWriter write = new BufferedWriter(new FileWriter("history.txt", true));
-            write.write(user.getId()+","+"deposit"+","+amount+","+balance);
-            write.newLine();
-            write.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        Writehistory(amount ,"deposit");
 
     }
 
     @Override
     public void withdraw(double amount )  {
+
         if(overdrafting_count ==2 ) {
             System.out.println("you cant do anything your account is locked");
             return;
         }
-        if(balance <= -100){
-            return;
+        if(balance < 0) {
+            overdrafting_count++;
+            balance -=35;
+            if(amount >= 100){
+                return;
+            }
         }
         balance -= amount;
         FindAccAndEditBalance(accountNumber, -amount);
         System.out.println("you balance now is :" + balance);
-
-        try {
-
-            BufferedWriter write = new BufferedWriter(new FileWriter("history.txt", true));
-            write.write(","+"withdraw"+","+amount+","+balance);
-            write.newLine();
-            write.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        if(balance < 0) {
-            overdrafting_count++;
-            balance -=35;
-        }
-        System.out.println(overdrafting_count);
+        Writehistory(amount ,"withdraw");
     }
 
     @Override
@@ -105,17 +90,20 @@ public int overdrafting_count=0;
         }else {
             withdraw(amount);
             FindAccAndEditBalance(targetAcc, amount);
-            try {
-                User user=new User();
-                BufferedWriter write = new BufferedWriter(new FileWriter("history.txt", true));
-                write.write(","+"transfer"+","+amount+","+balance);
-                write.newLine();
-                write.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+Writehistory(amount ,"transfer");
         }
     }
 
+
+    public void Writehistory(double amount , String tran_type){
+        try {
+            BufferedWriter write = new BufferedWriter(new FileWriter("history.txt", true));
+            write.write(user.getId()+","+"Account Type:"+getType()+","+" - Account number:"+accountNumber+","+" - Transaction Type:"+tran_type+","+" - Amount:"+amount+","+" - Current balance:"+balance);
+            write.newLine();
+            write.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

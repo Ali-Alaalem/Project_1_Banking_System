@@ -1,6 +1,9 @@
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Scanner;
 
@@ -98,7 +101,7 @@ Writehistory(amount ,"transfer");
     public void Writehistory(double amount , String tran_type){
         try {
             BufferedWriter write = new BufferedWriter(new FileWriter("history.txt", true));
-            write.write(user.getId()+","+"Account Type:"+getType()+","+" - Account number:"+accountNumber+","+" - Transaction Type:"+tran_type+","+" - Amount:"+amount+","+" - Current balance:"+balance);
+            write.write(user.getId()+","+"  Account Type:"+getType()+","+"  Account number:"+accountNumber+","+"  Transaction Type:"+tran_type+","+"  Amount:"+amount+","+"  Post Balance:"+balance+","+"  Date:"+ LocalDate.now()+","+"  Time:"+ LocalTime.now());
             write.newLine();
             write.close();
         } catch (IOException e) {

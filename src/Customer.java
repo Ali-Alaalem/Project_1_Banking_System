@@ -37,7 +37,7 @@ public class Customer extends User{
             }
             scanner.close();
 
-            File requestsFile = new File("C:\\Users\\meemo\\code\\ga\\projects\\Project_1_Banking_System\\requests.txt");
+            File requestsFile = new File("requests.txt");
             if (!requestsFile.exists()) requestsFile.createNewFile();
 
             Scanner reqScanner = new Scanner(requestsFile);

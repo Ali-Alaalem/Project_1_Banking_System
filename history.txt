@@ -1,3 +1,5 @@
-1,Account Type:SAV, - Account number:2581989522, - Transaction Type:deposit, - Amount:100.0, - Current balance:400.0
-
-1,Account Type:CHK, - Account number:6573378595, - Transaction Type:deposit, - Amount:100.0, - Current balance:600.0
+1,  Account Type:CHK,  Account number:6573378595,  Transaction Type:deposit,  Amount:100.0,  Post Balance:900.0,  Date:2025-12-02,  Time:19:37:21.514576900
+1,  Account Type:SAV,  Account number:2581989522,  Transaction Type:deposit,  Amount:100.0,  Post Balance:100.0,  Date:2025-12-02,  Time:20:02:50.439224800
+1,  Account Type:CHK,  Account number:6573378595,  Transaction Type:withdraw,  Amount:200.0,  Post Balance:700.0,  Date:2025-12-02,  Time:20:06:04.913764600
+1,  Account Type:CHK,  Account number:6573378595,  Transaction Type:transfer,  Amount:200.0,  Post Balance:700.0,  Date:2025-12-02,  Time:20:06:04.944011800
+1,  Account Type:SAV,  Account number:2581989522,  Transaction Type:deposit,  Amount:100.0,  Post Balance:200.0,  Date:2025-12-03,  Time:19:00:56.568497200

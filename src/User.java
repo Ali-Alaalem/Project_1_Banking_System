@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.SQLOutput;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -12,6 +14,7 @@ public class User implements IRegistrtion {
     public String hashed_pass;
     public String user_type;
     public List<Account> accounts = new ArrayList<>();
+    public int feild_login=0;
 
 
     public List<Account> getAccounts() {
@@ -79,42 +82,63 @@ public class User implements IRegistrtion {
     }
 
     public  boolean Login(Optional<String> userName, String password, Optional<String> Email) {
-        try {
-            File file = new File("users.txt");
-            Scanner scanner = new Scanner(file);
+        if (feild_login == 3) {
+            System.out.println();
+            System.out.println("Your account is looked try again after 1 min");
 
-            while (scanner.hasNextLine()) {
-                String[] user = scanner.nextLine().split(",");
-
-                setF_name(user[1]);
-                setL_name(user[2]);
-                setUser_name(user[4]);
-                setEmail(user[3]) ;
-                setHashed_pass(user[5]);
-
-
-                boolean usernameMatch = userName.isPresent() && userName.get().equals(getUser_name());
-                boolean emailMatch = Email.isPresent() && Email.get().equals(getEmail());
-                boolean passMatch = password.equals(getHashed_pass());
-
-                if ((usernameMatch || emailMatch) && passMatch) {
-                    setId(Integer.parseInt(user[0]));
-                    loadAccounts();
-                    if(user[9].equals("C")){
-                        setUser_type("C");
-                        System.out.println("Welcome Back "+getF_name());
-                    }else if(user[9].equals("B")){
-                        setUser_type("B");
-                        System.out.println("Welcome Back Employee "+getF_name());
-                    }
-                    return true;
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    feild_login=0;
                 }
-            }
-            System.out.println("The username/email or password is wrong");
+            },60000 );
             return false;
+        } else {
 
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            try {
+                File file = new File("users.txt");
+                Scanner scanner = new Scanner(file);
+
+                while (scanner.hasNextLine()) {
+                    String[] user = scanner.nextLine().split(",");
+
+
+                    String dbUserName = user[4];
+                    String dbEmail = user[3];
+                    String dbPassword = user[5];
+
+                    boolean usernameMatch = userName.isPresent() && userName.get().equals(dbUserName);
+                    boolean emailMatch = Email.isPresent() && Email.get().equals(dbEmail);
+                    boolean passMatch = password.equals(dbPassword);
+
+                    if ((usernameMatch || emailMatch) && passMatch) {
+                        setF_name(user[1]);
+                        setL_name(user[2]);
+                        setUser_name(user[4]);
+                        setEmail(user[3]);
+                        setHashed_pass(user[5]);
+                        setId(Integer.parseInt(user[0]));
+                        loadAccounts();
+                        if (user[9].equals("C")) {
+                            setUser_type("C");
+                            System.out.println("Welcome Back " + getF_name());
+                        } else if (user[9].equals("B")) {
+                            setUser_type("B");
+                            System.out.println("Welcome Back Employee " + getF_name());
+                        }
+                        return true;
+                    }
+                }
+                feild_login++;
+                System.out.println();
+                System.out.println("Your User name / Email is wrong please try again");
+                System.out.print("Press ENTER to return to log in page...");
+                try { System.in.read(); } catch (Exception e) { }
+                return false;
+
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -161,11 +185,73 @@ public class User implements IRegistrtion {
                 String[] data = line.split(",");
 
                 if (Integer.parseInt(data[0])==getId()) {
+                    String date=data[6];
+                    String type=data[1];
+                    String post_balance=data[5];
+                    System.out.println(date+" "+type+" "+post_balance);
+                }
+            }
+            scanner.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void DetailedAccountStatment(){
+        String balance="";
+        try {
+
+            File file = new File("history.txt");
+            Scanner scanner = new Scanner(file);
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine().trim();
+                if (line.isEmpty()) continue;
+
+                String[] data = line.split(",");
+
+                if (Integer.parseInt(data[0])==getId()) {
+                    balance=data[5];
                     String history=Arrays.stream(data).filter(n->!n.equals(data[0])).collect(Collectors.joining(","));
                     System.out.println(history);
 
                 }
             }
+            if(!balance.equals("")){
+                System.out.println("Your current balance is :" + balance);
+            }
+            scanner.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void FilterTransaction(String choice){
+        try {
+
+            File file = new File("history.txt");
+            Scanner scanner = new Scanner(file);
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine().trim();
+                if (line.isEmpty()) continue;
+
+                String[] data = line.split(",");
+
+                if (Integer.parseInt(data[0]) == getId()) {
+                    if (choice.equals("1") && data[6].equals("  Date:" + LocalDate.now())) {
+                        System.out.println(line);
+                    } else if (choice.equals("2") && data[6].equals("  Date:" + LocalDate.now().minusDays(1))) {
+                        System.out.println(line);
+                    } else if (choice.equals("3") && data[6].equals("  Date:" + LocalDate.now().minusDays(7))) {
+                        System.out.println(line);
+                    } else if (choice.equals("4") && data[6].equals("  Date:" + LocalDate.now().minusDays(30))) {
+                        System.out.println(line);
+                    }
+                }
+
+            }
+
+
             scanner.close();
         } catch (Exception e) {
             throw new RuntimeException(e);

@@ -18,7 +18,7 @@ public class SystemCmd {
         String account = scanner.next();
 
         if (account.equals("y")) {
-
+            while (user.getF_name()==null){
             System.out.print("User name / Email :");
             String user_name_or_email = scanner.next();
             System.out.print("Password :");
@@ -30,6 +30,8 @@ public class SystemCmd {
                     Optional.of(user_name_or_email)
             );
 
+
+        }
             while (!exit) {
 
                 System.out.println("*************************************************");
@@ -44,13 +46,17 @@ public class SystemCmd {
                     System.out.println(" 3-Deposit");
                     System.out.println(" 4-Withdraw");
                     System.out.println(" 5-Display History");
-                    System.out.println(" 6-exit");
+                    System.out.println(" 6-Account Statement");
+                    System.out.println(" 7-Filter Transaction");
+                    System.out.println(" 8-exit");
                 } else {
                     System.out.println(" 1-Transfer");
                     System.out.println(" 2-Deposit");
                     System.out.println(" 3-Withdraw");
                     System.out.println(" 4-Display History");
-                    System.out.println(" 5-exit");
+                    System.out.println(" 5-Account Statement");
+                    System.out.println(" 6-Filter Transaction");
+                    System.out.println(" 7-exit");
                 }
 
                 System.out.print("What do you want to do : ");
@@ -137,8 +143,21 @@ public class SystemCmd {
                     if (option.equals("5")) {
                         user.DisplayHistory();
                     }
-
                     if (option.equals("6")) {
+                        user.DetailedAccountStatment();
+                    }
+                    if (option.equals("7")) {
+                        System.out.println(" 1-Transfer");
+                        System.out.println(" 2-Deposit");
+                        System.out.println(" 3-Withdraw");
+                        System.out.println(" 4-Display History");
+                        System.out.println(" 5-Account Statement");
+                        System.out.println(" 6-Filter Transaction");
+                        System.out.println(" 7-exit");
+                        String option1=scanner.next();
+                        user.FilterTransaction(option1);
+                    }
+                    if (option.equals("8")) {
                         exit = true;
                     }
                 }
@@ -208,8 +227,19 @@ public class SystemCmd {
                     else if (option.equals("4")) {
                         user.DisplayHistory();
                     }
-
                     else if (option.equals("5")) {
+                        user.DetailedAccountStatment();
+                    }else if (option.equals("6")) {
+                        System.out.println(" 1-Today");
+                        System.out.println(" 2-Yesterday");
+                        System.out.println(" 3-Last 7 days");
+                        System.out.println(" 4-Last 30 days");
+                        System.out.println();
+                        System.out.print("Pick the filter you want : ");
+                        String option1=scanner.next();
+                        user.FilterTransaction(option1);
+                    }
+                    else if (option.equals("7")) {
                         exit = true;
                     }
                 }

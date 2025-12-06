@@ -73,18 +73,18 @@ public class Customer extends User{
            String  sav_acc_number=Account.generateAccountNumber();
 
             if(accType.equalsIgnoreCase("CHK")){
-                String info = getId() + "," + first_name + "," + last_name + "," + Email + "," + userName + "," + password.hashCode()+"," +"CHK"+","+chk_acc_number+","+"0"+"," + getUser_type();
+                String info = getId() + "," + first_name + "," + last_name + "," + Email + "," + userName + "," + password.hashCode()+"," +"CHK"+","+chk_acc_number+","+"No Card"+","+"0"+"," + getUser_type();
                 write.write(info);
                 write.newLine();
 
             }else if (accType.equalsIgnoreCase("SAV")){
-                String info = getId() + "," + first_name + "," + last_name + "," + Email + "," + userName + "," + password.hashCode()+"," +"SAV"+","+sav_acc_number+","+"0"+"," + getUser_type();
+                String info = getId() + "," + first_name + "," + last_name + "," + Email + "," + userName + "," + password.hashCode()+"," +"SAV"+","+sav_acc_number+","+"No Card"+","+"0"+"," + getUser_type();
                 write.write(info);
                 write.newLine();
 
             }else if(accType.equalsIgnoreCase("BOTH")){
-                String info = getId() + "," + first_name + "," + last_name + "," + Email + "," + userName + "," + password.hashCode()+"," +"CHK"+","+chk_acc_number+","+"0"+"," + getUser_type();
-                String info2 = getId() + "," + first_name + "," + last_name + "," + Email + "," + userName + "," + password.hashCode()+"," +"SAV"+","+sav_acc_number+","+"0"+"," + getUser_type();
+                String info = getId() + "," + first_name + "," + last_name + "," + Email + "," + userName + "," + password.hashCode()+"," +"CHK"+","+chk_acc_number+","+"No Card"+","+"0"+"," + getUser_type();
+                String info2 = getId() + "," + first_name + "," + last_name + "," + Email + "," + userName + "," + password.hashCode()+"," +"SAV"+","+sav_acc_number+","+"No Card"+","+"0"+"," + getUser_type();
                 write.write(info);
                 write.newLine();
                 write.write(info2);

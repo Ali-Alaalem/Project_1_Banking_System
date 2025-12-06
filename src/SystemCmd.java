@@ -48,7 +48,8 @@ public class SystemCmd {
                     System.out.println(" 5-Display History");
                     System.out.println(" 6-Account Statement");
                     System.out.println(" 7-Filter Transaction");
-                    System.out.println(" 8-exit");
+                    System.out.println(" 8-Create Cards");
+                    System.out.println(" 9-exit");
                 } else {
                     System.out.println(" 1-Transfer");
                     System.out.println(" 2-Deposit");
@@ -56,7 +57,8 @@ public class SystemCmd {
                     System.out.println(" 4-Display History");
                     System.out.println(" 5-Account Statement");
                     System.out.println(" 6-Filter Transaction");
-                    System.out.println(" 7-exit");
+                    System.out.println(" 7-Create Cards");
+                    System.out.println(" 8-exit");
                 }
 
                 System.out.print("What do you want to do : ");
@@ -158,6 +160,24 @@ public class SystemCmd {
                         user.FilterTransaction(option1);
                     }
                     if (option.equals("8")) {
+                        System.out.print("For which account you want the card (SAV,CHK)  : ");
+                        String account_type = scanner.next();
+                        System.out.print("What type you want (Mastercard Platinum,Mastercard Titanium,Mastercard) : ");
+                        String card_type = scanner.next();
+
+                        for (Account acc : user.getAccounts()) {
+                            if (acc.getType().equals(account_type)) {
+                                sorce_acc = acc;
+                            }
+                        }
+
+                        try {
+                            sorce_acc.CreateCard(card_type);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    if (option.equals("9")) {
                         exit = true;
                     }
                 }
@@ -238,8 +258,25 @@ public class SystemCmd {
                         System.out.print("Pick the filter you want : ");
                         String option1=scanner.next();
                         user.FilterTransaction(option1);
+                    } else if (option.equals("7")) {
+                        System.out.print("For which account you want the card (SAV,CHK)  : ");
+                        String account_type = scanner.next();
+                        System.out.print("What type you want (Mastercard Platinum,Mastercard Titanium,Mastercard) : ");
+                        String card_type = scanner.next();
+
+                        for (Account acc : user.getAccounts()) {
+                            if (acc.getType().equals(account_type)) {
+                                sorce_acc = acc;
+                            }
+                        }
+
+                        try {
+                            sorce_acc.CreateCard(card_type);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
                     }
-                    else if (option.equals("7")) {
+                    else if (option.equals("8")) {
                         exit = true;
                     }
                 }

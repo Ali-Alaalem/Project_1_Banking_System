@@ -82,18 +82,6 @@ public class User implements IRegistrtion {
     }
 
     public  boolean Login(Optional<String> userName, String password, Optional<String> Email) {
-        if (feild_login == 3) {
-            System.out.println();
-            System.out.println("Your account is looked try again after 1 min");
-
-            new Timer().schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    feild_login=0;
-                }
-            },60000 );
-            return false;
-        } else {
 
             try {
                 File file = new File("users.txt");
@@ -118,18 +106,33 @@ public class User implements IRegistrtion {
                         setEmail(user[3]);
                         setHashed_pass(user[5]);
                         setId(Integer.parseInt(user[0]));
+
                         loadAccounts();
-                        if (user[9].equals("C")) {
+                        if (user[10].equals("C")) {
                             setUser_type("C");
                             System.out.println("Welcome Back " + getF_name());
-                        } else if (user[9].equals("B")) {
+                        } else if (user[10].equals("B")) {
                             setUser_type("B");
                             System.out.println("Welcome Back Employee " + getF_name());
                         }
                         return true;
+                    }else  if ((usernameMatch || emailMatch) && !passMatch){
+                        if (feild_login == 3){
+                            System.out.println();
+                            System.out.println("Your account is looked try again after 1 min");
+
+                            new Timer().schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    feild_login=0;
+                                }
+                            },60000 );
+                            return false;
+                        }
+                        feild_login++;
                     }
                 }
-                feild_login++;
+
                 System.out.println();
                 System.out.println("Your User name / Email is wrong please try again");
                 System.out.print("Press ENTER to return to log in page...");
@@ -140,7 +143,7 @@ public class User implements IRegistrtion {
                 throw new RuntimeException(e);
             }
         }
-    }
+
 
     public void loadAccounts() {
         try {
@@ -156,12 +159,13 @@ public class User implements IRegistrtion {
 
                 if (data[4].equals(getUser_name())) {
                     String accNum = data[7];
-                    double bal = Double.parseDouble(data[8]);
+                    double bal = Double.parseDouble(data[9]);
                     String type = data[6];
 
                     Account acc;
                     if(type.equalsIgnoreCase("SAV")) acc = new SavingsAccount(accNum, bal,this);
                     else acc = new CheckingAccount(accNum, bal ,this);
+                   acc.card=new DebitCards(data[8]);
 
                     addAccount(acc);
                 }
@@ -257,6 +261,8 @@ public class User implements IRegistrtion {
             throw new RuntimeException(e);
         }
     }
+
+
 
 
     @Override

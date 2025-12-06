@@ -86,6 +86,8 @@ public String card_type;
 
     @Override
     public void withdraw(double amount )  {
+
+
         double usedToday = getTodayTotal("withdraw");
         double limit = card.getWithdrawLimitPerDay();
 

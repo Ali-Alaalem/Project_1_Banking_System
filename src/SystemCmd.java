@@ -73,7 +73,6 @@ public class SystemCmd {
         System.out.println("*************************************************");
         System.out.println("Welcome to ACME Bank tha safest bank in the world");
         System.out.println("*************************************************");
-        System.out.println();
         System.out.print("1-Sign up\n2-Sign in\nYour choice: ");
 
         String account = scanner.next();
@@ -196,8 +195,15 @@ public class SystemCmd {
                         }
                     }
 
-                    else if (option.equals("5")) user.DisplayHistory();
-                    else if (option.equals("6")) user.DetailedAccountStatment();
+                    else if (option.equals("5")){
+                        System.out.print("For which account (SAV,CHK) :");
+                        user.DisplayHistory(scanner.next());
+                    }
+                    else if(option.equals("6"))
+                    {
+                        System.out.print("For which account (SAV,CHK) :");
+                        user.DetailedAccountStatment(scanner.next());
+                    }
 
                     else if (option.equals("7")) {
                         System.out.println(" 1-Today");
@@ -299,8 +305,15 @@ public class SystemCmd {
                         }
                     }
 
-                    else if (option.equals("4")) user.DisplayHistory();
-                    else if (option.equals("5")) user.DetailedAccountStatment();
+                    else if (option.equals("4")){
+                        System.out.print("For which account (SAV,CHK) :");
+                        user.DisplayHistory(scanner.next());
+                    }
+                    else if(option.equals("5"))
+                    {
+                        System.out.print("For which account (SAV,CHK) :");
+                        user.DetailedAccountStatment(scanner.next());
+                    }
 
                     else if (option.equals("6")) {
                         System.out.println(" 1-Today");

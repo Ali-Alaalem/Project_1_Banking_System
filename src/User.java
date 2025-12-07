@@ -176,7 +176,7 @@ public class User implements IRegistrtion {
         }
     }
 
-    public void DisplayHistory(){
+    public void DisplayHistory(String acc_type){
         try {
 
             File file = new File("history.txt");
@@ -188,7 +188,7 @@ public class User implements IRegistrtion {
 
                 String[] data = line.split(",");
 
-                if (Integer.parseInt(data[0])==getId()) {
+                if (Integer.parseInt(data[0])==getId() && data[1].equals("  Account Type:"+acc_type)) {
                     String date=data[6];
                     String type=data[1];
                     String post_balance=data[5];
@@ -201,7 +201,7 @@ public class User implements IRegistrtion {
         }
     }
 
-    public void DetailedAccountStatment(){
+    public void DetailedAccountStatment(String acc_type){
         String balance="";
         try {
 
@@ -214,7 +214,7 @@ public class User implements IRegistrtion {
 
                 String[] data = line.split(",");
 
-                if (Integer.parseInt(data[0])==getId()) {
+                if (Integer.parseInt(data[0])==getId()&& data[1].equals("  Account Type:"+acc_type)) {
                     balance=data[5];
                     String history=Arrays.stream(data).filter(n->!n.equals(data[0])).collect(Collectors.joining(","));
                     System.out.println(history);
@@ -242,21 +242,28 @@ public class User implements IRegistrtion {
                 String[] data = line.split(",");
 
                 if (Integer.parseInt(data[0]) == getId()) {
+
                     if (choice.equals("1") && data[6].equals("  Date:" + LocalDate.now())) {
                         System.out.println(line);
+
                     } else if (choice.equals("2") && data[6].equals("  Date:" + LocalDate.now().minusDays(1))) {
                         System.out.println(line);
-                    } else if (choice.equals("3") && data[6].equals("  Date:" + LocalDate.now().minusDays(7))) {
+
+                    } else if (choice.equals("3") &&
+                            !LocalDate.parse(data[6].replace("  Date:", "")).isBefore(LocalDate.now().minusDays(7)) &&
+                            !LocalDate.parse(data[6].replace("  Date:", "")).isAfter(LocalDate.now())) {
                         System.out.println(line);
-                    } else if (choice.equals("4") && data[6].equals("  Date:" + LocalDate.now().minusDays(30))) {
+
+                    } else if (choice.equals("4") &&
+                            !LocalDate.parse(data[6].replace("  Date:", "")).isBefore(LocalDate.now().minusDays(30)) &&
+                            !LocalDate.parse(data[6].replace("  Date:", "")).isAfter(LocalDate.now())) {
                         System.out.println(line);
                     }
-                }
-
-            }
+                }}
 
 
-            scanner.close();
+
+                scanner.close();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

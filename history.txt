@@ -1,2 +1,3 @@
-0,  Account Type:CHK,  Account number:0000001111,  Transaction Type:deposit,  Amount:100000.0,  Post Balance:106632.0,  Date:2025-12-06,  Time:11:40:16.093723800
-1,  Account Type:CHK,  Account number:5995465845,  Transaction Type:deposit,  Amount:100.0,  Post Balance:100.0,  Date:2025-12-06,  Time:18:07:58.727330500
+1,  Account Type:CHK,  Account number:5995465845,  Transaction Type:deposit,  Amount:100.0,  Post Balance:200.0,  Date:2025-12-07,  Time:16:54:25.282852100
+3,  Account Type:CHK,  Account number:0552155787,  Transaction Type:deposit,  Amount:100.0,  Post Balance:100.0,  Date:2025-12-07,  Time:18:12:05.092278400
+3,  Account Type:SAV,  Account number:6155160656,  Transaction Type:deposit,  Amount:100.0,  Post Balance:100.0,  Date:2025-12-07,  Time:18:12:12.964534200

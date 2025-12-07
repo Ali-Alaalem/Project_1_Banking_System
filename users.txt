@@ -1,4 +1,6 @@
 0,Mueen,Ahmed,Mueen123@gmail.com,Mueen123,1509442,CHK,0000001111,Mastercard,106632.0,B
-1,Ali,Moh,Ali@gmail.com,Alooy,1509442,CHK,5995465845,No Card,100.0,C
+1,Ali,Moh,Ali@gmail.com,Alooy,1509442,CHK,5995465845,No Card,200.0,C
 2,Moh,Ahmed,moh@hmail.com,moh123,1509442,CHK,9387732627,No Card,0,C
 2,Moh,Ahmed,moh@hmail.com,moh123,1509442,SAV,9226982818,No Card,0,C
+3,moh,Ahmed,Moh@gmail.com,moh,1509442,CHK,0552155787,No Card,100.0,C
+3,moh,Ahmed,Moh@gmail.com,moh,1509442,SAV,6155160656,No Card,100.0,C

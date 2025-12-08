@@ -76,40 +76,54 @@ public String card_type;
             System.out.println("you balance now is :" + balance);
 
 
-            if(overdrafting_count ==2 && balance>0){
-                overdrafting_count=0;
-            }
+        if (overdrafting_count >= 2 && balance > 0) {
+            overdrafting_count = 0;
+            System.out.println("Your account has been reactivated.");
+        }
+
 
         Writehistory(amount ,"deposit");
 
     }
 
     @Override
-    public void withdraw(double amount )  {
-
+    public boolean withdraw(double amount) {
 
         double usedToday = getTodayTotal("withdraw");
         double limit = card.getWithdrawLimitPerDay();
 
         if (usedToday + amount > limit) {
             System.out.println("Withdraw failed: Daily limit exceeded");
-            return;
+            return false;
         }
-        if(overdrafting_count ==2 ) {
-            System.out.println("you cant do anything your account is locked");
-            return;
+
+        if (overdrafting_count >= 2) {
+            System.out.println("Your account is locked due to overdrafts.");
+            return false;
         }
-        if(balance < 0) {
-            overdrafting_count++;
-            balance -=35;
-            if(amount >= 100){
-                return;
+
+        if (balance < 0 ) {
+            if (amount >= 100) {
+                System.out.println("Withdraw failed: Cannot withdraw 100 or more while balance is negative.");
+                return false;
             }
         }
+
+        if(balance-amount<0){
+            overdrafting_count++;
+            balance -= 35;
+            System.out.println("Overdraft fee charged.");
+        }
+
+
+
         balance -= amount;
         FindAccAndEditBalance(accountNumber, -amount);
-        System.out.println("you balance now is :" + balance);
-        Writehistory(amount ,"withdraw");
+
+        System.out.println("Withdraw successful. Balance now: " + balance);
+
+        Writehistory(amount, "withdraw");
+        return true;
     }
 
     @Override
@@ -139,9 +153,13 @@ public String card_type;
 
 
         withdraw(amount);
-        FindAccAndEditBalance(targetAcc, amount);
-        String tranType = isOwnAccount ? "own-transfer" : "transfer";
-        Writehistory(amount, tranType);
+        if(withdraw(amount)) {
+            FindAccAndEditBalance(targetAcc, amount);
+            String tranType = isOwnAccount ? "own-transfer" : "transfer";
+            Writehistory(amount, tranType);
+        }else{
+            System.out.println("Your account is locked you cant transfer");
+        }
     }
 
 

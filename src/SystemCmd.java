@@ -25,10 +25,12 @@ public class SystemCmd {
     private double readAmount(Scanner scanner) {
         while (true) {
             String input = scanner.next();
+
                 double amount = Double.parseDouble(input);
-                if (amount > 0) {
+                if (amount > 0 ) {
                     return amount;
-                }
+
+            }
                 System.out.print(" Amount must be greater than 0. Re-enter: ");
         }
     }
@@ -156,6 +158,8 @@ public class SystemCmd {
                                 throw new RuntimeException();
 
                             }
+                        }else{
+                            System.out.println("This is not your account");
                         }
                     } else if (option.equals("3")) {
                         System.out.print("Account number : ");
@@ -174,6 +178,8 @@ public class SystemCmd {
                             } catch (Exception e) {
                                 throw new RuntimeException();
                             }
+                        }else{
+                            System.out.println("This is not your account");
                         }
                     } else if(option.equals("4")) {
                         System.out.print("Account number : ");
@@ -192,6 +198,8 @@ public class SystemCmd {
                             } catch (Exception e) {
                                 throw new RuntimeException();
                             }
+                        }else{
+                            System.out.println("This is not your account");
                         }
                     }
 
@@ -219,7 +227,7 @@ public class SystemCmd {
                         String account_type = readAccTypeWhileCreatingCards(scanner);
                         scanner.nextLine();
 
-                        System.out.print("Card type: ");
+                        System.out.print("Card type (Mastercard Platinum,Mastercard Titanium,Mastercard: )");
                         String card_type = readCardType(scanner);
 
                         sorce_acc = user.getAccounts().stream()
@@ -262,6 +270,8 @@ public class SystemCmd {
                             } catch (Exception e) {
                                 throw new RuntimeException();
                             }
+                        }else{
+                            System.out.println("This is not your account");
                         }
                     }
 
@@ -282,6 +292,8 @@ public class SystemCmd {
                             } catch (Exception e) {
                                 throw new RuntimeException();
                             }
+                        }else{
+                            System.out.println("This is not your account");
                         }
                     }
 
@@ -302,6 +314,8 @@ public class SystemCmd {
                             } catch (Exception e) {
                                 throw new RuntimeException();
                             }
+                        }else{
+                            System.out.println("This is not your account");
                         }
                     }
 
@@ -329,7 +343,7 @@ public class SystemCmd {
                         String account_type = readAccTypeWhileCreatingCards(scanner);
                         scanner.nextLine();
 
-                        System.out.print("Card type: ");
+                        System.out.print("Card type (Mastercard Platinum,Mastercard Titanium,Mastercard) : ");
                         String card_type = readCardType(scanner);
 
                         sorce_acc = user.getAccounts().stream()
@@ -343,6 +357,8 @@ public class SystemCmd {
                                 throw new RuntimeException();
 
                             }
+                        }else{
+                            System.out.println("You dont have this account");
                         }
                     } else if (option.equals("8")) exit = true;
                     else{

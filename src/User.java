@@ -260,9 +260,6 @@ public class User implements IRegistrtion {
                         System.out.println(line);
                     }
                 }}
-
-
-
                 scanner.close();
         } catch (Exception e) {
             throw new RuntimeException(e);

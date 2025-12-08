@@ -159,12 +159,13 @@ public String card_type;
 
     public void CreateCard(String card_type){
         try {
+            boolean found=false;
             List<String> lines = Files.readAllLines(Path.of("users.txt"));
 
             for (int i = 0; i <lines.size() ; i++) {
                 String line=lines.get(i);
                 String[] users=line.split(",");
-                if(Double.parseDouble(users[0])==(user.getId()) && users[6].equals(getType())  ){
+                if(Double.parseDouble(users[0])==(user.getId()) && users[6].equals(getType())){
                     if(!users[8].equals("No Card")){
                         System.out.println("You already have a card");
                         return;
@@ -175,11 +176,8 @@ public String card_type;
                      card=new DebitCards(card_type);
                     setCard_type(users[8]);
                 }
-                else{
-                    System.out.println("You don't have this account");
-                    return;
-                }
             }
+
             Files.write(Path.of("users.txt"),lines);
 
         } catch (Exception e) {

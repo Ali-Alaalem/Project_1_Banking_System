@@ -8,7 +8,7 @@ public class Customer extends User{
 
 
     @Override
-    public boolean Create_account(String userName, String password, String Email ,String first_name ,String last_name,String accType) {
+    public boolean Create_account(String userName, String password, String Email ,String first_name ,String last_name,String accType,Optional<String> Card_CHK_type,Optional<String> Card_SAV_type) {
         try {
             setUser_type("C");
 
@@ -73,18 +73,18 @@ public class Customer extends User{
            String  sav_acc_number=Account.generateAccountNumber();
 
             if(accType.equalsIgnoreCase("CHK")){
-                String info = getId() + "," + first_name + "," + last_name + "," + Email + "," + userName + "," + password.hashCode()+"," +"CHK"+","+chk_acc_number+","+"No Card"+","+"0"+"," + getUser_type();
+                String info = getId() + "," + first_name + "," + last_name + "," + Email + "," + userName + "," + password.hashCode()+"," +"CHK"+","+chk_acc_number+","+Card_CHK_type.get()+","+"0"+"," + getUser_type();
                 write.write(info);
                 write.newLine();
 
             }else if (accType.equalsIgnoreCase("SAV")){
-                String info = getId() + "," + first_name + "," + last_name + "," + Email + "," + userName + "," + password.hashCode()+"," +"SAV"+","+sav_acc_number+","+"No Card"+","+"0"+"," + getUser_type();
+                String info = getId() + "," + first_name + "," + last_name + "," + Email + "," + userName + "," + password.hashCode()+"," +"SAV"+","+sav_acc_number+","+Card_SAV_type.get()+","+"0"+"," + getUser_type();
                 write.write(info);
                 write.newLine();
 
             }else if(accType.equalsIgnoreCase("BOTH")){
-                String info = getId() + "," + first_name + "," + last_name + "," + Email + "," + userName + "," + password.hashCode()+"," +"CHK"+","+chk_acc_number+","+"No Card"+","+"0"+"," + getUser_type();
-                String info2 = getId() + "," + first_name + "," + last_name + "," + Email + "," + userName + "," + password.hashCode()+"," +"SAV"+","+sav_acc_number+","+"No Card"+","+"0"+"," + getUser_type();
+                String info = getId() + "," + first_name + "," + last_name + "," + Email + "," + userName + "," + password.hashCode()+"," +"CHK"+","+chk_acc_number+","+Card_CHK_type.get()+","+"0"+"," + getUser_type();
+                String info2 = getId() + "," + first_name + "," + last_name + "," + Email + "," + userName + "," + password.hashCode()+"," +"SAV"+","+sav_acc_number+","+Card_SAV_type.get()+","+"0"+"," + getUser_type();
                 write.write(info);
                 write.newLine();
                 write.write(info2);

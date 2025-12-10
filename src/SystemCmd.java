@@ -37,7 +37,7 @@ public class SystemCmd {
 
     private String readCardType(Scanner scanner) {
         while (true) {
-            String type = scanner.nextLine().trim();
+            String type = scanner.next().trim();
             if (type.equalsIgnoreCase("Mastercard")
                     || type.equalsIgnoreCase("Mastercard Titanium")
                     || type.equalsIgnoreCase("Mastercard Platinum")) {
@@ -110,8 +110,7 @@ public class SystemCmd {
                     System.out.println(" 5-Display History");
                     System.out.println(" 6-Account Statement");
                     System.out.println(" 7-Filter Transaction");
-                    System.out.println(" 8-Create Cards");
-                    System.out.println(" 9-exit");
+                    System.out.println(" 8-exit");
                 } else {
                     System.out.println(" 1-Transfer");
                     System.out.println(" 2-Deposit");
@@ -119,8 +118,7 @@ public class SystemCmd {
                     System.out.println(" 4-Display History");
                     System.out.println(" 5-Account Statement");
                     System.out.println(" 6-Filter Transaction");
-                    System.out.println(" 7-Create Cards");
-                    System.out.println(" 8-exit");
+                    System.out.println(" 7-exit");
                 }
 
                 System.out.print("What do you want to do : ");
@@ -221,30 +219,10 @@ public class SystemCmd {
                         System.out.print("Pick the filter you want : ");
                         user.FilterTransaction(scanner.next());
                     }
-
                     else if (option.equals("8")) {
-                        System.out.print("For which account (SAV, CHK): ");
-                        String account_type = readAccTypeWhileCreatingCards(scanner);
-                        scanner.nextLine();
-
-                        System.out.print("Card type (Mastercard Platinum,Mastercard Titanium,Mastercard: )");
-                        String card_type = readCardType(scanner);
-
-                        sorce_acc = user.getAccounts().stream()
-                                .filter(a -> a.getType().equals(account_type))
-                                .findFirst().orElse(null);
-
-                        if (sorce_acc != null) {
-                            try {
-                                sorce_acc.CreateCard(card_type);
-                            } catch (Exception e) {
-                                throw new RuntimeException();
-                            }
-                        }
-                    } else if(option.equals("9")) exit = true;
-                    else {
-                        System.out.println("Please enter a number from the list");
+                        System.exit(0);
                     }
+
                 }
 
 
@@ -337,33 +315,11 @@ public class SystemCmd {
                         System.out.print("Pick the filter you want : ");
                         user.FilterTransaction(scanner.next());
                     }
-
                     else if (option.equals("7")) {
-                        System.out.print("Account type (SAV, CHK): ");
-                        String account_type = readAccTypeWhileCreatingCards(scanner);
-                        scanner.nextLine();
+                        System.exit(0);
+                    }
 
-                        System.out.print("Card type (Mastercard Platinum,Mastercard Titanium,Mastercard) : ");
-                        String card_type = readCardType(scanner);
 
-                        sorce_acc = user.getAccounts().stream()
-                                .filter(a -> a.getType().equals(account_type))
-                                .findFirst().orElse(null);
-
-                        if (sorce_acc != null) {
-                            try {
-                                sorce_acc.CreateCard(card_type);
-                            } catch (Exception e) {
-                                throw new RuntimeException();
-
-                            }
-                        }else{
-                            System.out.println("You dont have this account");
-                        }
-                    } else if (option.equals("8")) exit = true;
-                    else{
-                        System.out.println("Please enter a number from the list");
-                }
                 }
 
                 System.out.println();
@@ -397,7 +353,23 @@ public class SystemCmd {
             System.out.print("Account type (CHK , SAV , BOTH) : ");
             String acc_type = readSignupAccType(scanner);
 
-            customer.Create_account(user_name, password, Email, f_name, l_name, acc_type);
+            String CHK_card_type=null;
+            String SAV_card_type=null;
+
+            if(acc_type.equals("BOTH")){
+                System.out.print("Card Type for CHK account (Mastercard Platinum,Mastercard Titanium,Mastercard) : ");
+                 CHK_card_type = readCardType(scanner);
+                System.out.print("Card Type for SAV account (Mastercard Platinum,Mastercard Titanium,Mastercard) : ");
+                 SAV_card_type = readCardType(scanner);
+            }else if(acc_type.equals("CHK")){
+                System.out.print("Card Type for CHK account (Mastercard Platinum,Mastercard Titanium,Mastercard) : ");
+                 CHK_card_type = readCardType(scanner);
+            }else if(acc_type.equals("SAV")){
+                System.out.print("Card Type for SAV account (Mastercard Platinum,Mastercard Titanium,Mastercard) : ");
+                 SAV_card_type = readCardType(scanner);
+            }
+
+            customer.Create_account(user_name, password, Email, f_name, l_name, acc_type , Optional.ofNullable(CHK_card_type) ,Optional.ofNullable(SAV_card_type));
             System.out.println("Your account will be reviewed and created within 24 hours");
         }
         else{
